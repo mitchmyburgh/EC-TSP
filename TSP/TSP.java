@@ -111,7 +111,35 @@ public class TSP {
     }
 
     public static void evolve() {
-        //Write evolution code here.
+        //Generate 100 children
+        Chromosome[] children = Chromosome.mutate_3_point(chromosomes);
+        for (int i = 0; i < children.length; i ++){
+            children[i].calculateCost(cities);
+        }
+        for (int i = 0; i < chromosomes.length; i ++){
+            chromosomes[i].calculateCost(cities);
+        }
+
+        Chromosome.sortChromosomes(chromosomes, populationSize);
+        Chromosome.sortChromosomes(children, populationSize);
+        //select next generation 
+        Chromosome[] end_pop = new Chromosome[populationSize];
+        int count = 0;
+        int pos = 0;
+        for (int i = 0; i < chromosomes.length; i ++){
+            double cost = chromosomes[i].getCost();
+            while (children[count].getCost() >= cost && pos != populationSize){
+                end_pop[pos] = children[count];
+                pos++;
+                count++;
+            }
+            if (pos != populationSize){
+                end_pop[pos] = chromosomes[i];
+                pos++;
+            }
+        }
+        chromosomes = end_pop;
+        //Chromosome[] both = (Chromosome[])ArrayUtils.addAll(first, second);
     }
 
     /**
