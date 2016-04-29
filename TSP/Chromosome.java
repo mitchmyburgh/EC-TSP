@@ -123,7 +123,7 @@ class Chromosome {
     public static Chromosome[] mutate_3_point (Chromosome chromosomes[]) {
         Chromosome[] return_chromosomes = new Chromosome[chromosomes.length];
         Random rand = new Random();
-        double mutation_probability = 0.5;
+        double mutation_probability = 0.1;
         for (int i = 0; i<chromosomes.length; i++){
             if (rand.nextDouble() < mutation_probability) {
                 int length = chromosomes[i].getCities().length;
@@ -131,18 +131,14 @@ class Chromosome {
                 //up to and not including length
                 int start = rand.nextInt(length);
                 int end = rand.nextInt((length- start))+start; //check this
-                int position = rand.nextInt(length-(end-start)-1); // check this
+                int position = rand.nextInt(length-(end-start)); // check this
 
                 return_chromosomes[i] = new Chromosome(chromosomes[i]);
-
-                System.out.println(start);
-                System.out.println(end);
-                System.out.println(position);
 
                 int[] cities = return_chromosomes[i].getCities();
                 int[] new_cities = new int[cities.length];
                 int count=0;
-                for (int j = start; j <= (end); j++){ 
+                for (int j = start; j <= (end); j++){
                     new_cities[position+count] = cities[j];
                     cities[j] = -1;
                     count++;
@@ -158,6 +154,8 @@ class Chromosome {
                 }
 
                 return_chromosomes[i].setCities(new_cities);
+            } else {
+              return_chromosomes[i] = new Chromosome(chromosomes[i]);
             }
         }
         return return_chromosomes;
