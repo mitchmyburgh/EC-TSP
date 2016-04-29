@@ -113,7 +113,9 @@ public class TSP {
     public static void evolve() {
         //Generate 100 children
         Chromosome[] children = Chromosome.mutate_3_point(chromosomes);
+        System.out.println(children);
         for (int i = 0; i < children.length; i ++){
+            System.out.println(i);
             children[i].calculateCost(cities);
         }
         for (int i = 0; i < chromosomes.length; i ++){
