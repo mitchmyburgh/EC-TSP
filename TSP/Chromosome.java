@@ -160,4 +160,10 @@ class Chromosome {
         }
         return return_chromosomes;
     }
+
+    public static Chromosome[] crossover (Chromosome chromosomes[]) {
+        Chromosome[] return_chromosomes = new Chromosome[chromosomes.length];
+        Random rand = new Random();
+        return return_chromosomes;
+    }
 }
