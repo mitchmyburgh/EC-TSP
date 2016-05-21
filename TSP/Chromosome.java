@@ -228,4 +228,70 @@ class Chromosome {
         return_chromosome.setCities(new_cities);
         return return_chromosome;
     }
+
+    public static Chromosome transposition (Chromosome chromosome) {
+        Random rand = new Random();
+
+        int length = chromosome.getCities().length;
+        int number_of_switches = 1;//rand.nextInt(length);
+        //up to and not including length
+
+
+        Chromosome return_chromosome = new Chromosome(chromosome);
+
+        int[] cities = return_chromosome.getCities();
+        for (int i = 0; i < number_of_switches; i++){
+          int pos1 = rand.nextInt(length);
+          int pos2 = rand.nextInt(length); //check this
+          int temp = cities[pos2];
+          cities[pos2] = cities[pos1];
+          cities[pos1] = temp;
+        }
+        return_chromosome.setCities(cities);
+        return return_chromosome;
+    }
+    public static Chromosome translocation (Chromosome chromosome) {
+        Random rand = new Random();
+
+        int length = chromosome.getCities().length;
+        int number_of_switches = 1;//rand.nextInt(length);
+        //up to and not including length
+
+
+        Chromosome return_chromosome = new Chromosome(chromosome);
+
+        int[] cities = return_chromosome.getCities();
+        int[] new_cities = new int[cities.length];
+        int pos1 = rand.nextInt(length);
+        int pos2 = rand.nextInt(length); //check this
+        while (pos2 == pos1){
+          pos2 = rand.nextInt(length); //check this
+        }
+        int pos = 0;
+        int temp = cities[pos1];
+        for (int i = 0; i < cities.length; i++){
+          if (i == pos1){
+            continue;
+          }
+          if (i == pos2){
+              new_cities[pos] = temp;
+              new_cities[pos+1] = cities[i];
+              pos+=2;
+              continue;
+          }
+          new_cities[pos] = cities[i];
+          pos++;
+        }
+        int total = 0;
+        int total_produced = 0;
+        for (int i = 0; i < new_cities.length; i++){
+          total += (i);
+          total_produced += new_cities[i];
+        }
+        if (total != total_produced){
+          System.out.println("ERROR");
+        }
+        return_chromosome.setCities(new_cities);
+        return return_chromosome;
+    }
 }

@@ -165,48 +165,6 @@ public class TSP {
 				}
 			}
 		}
-		for (int i = 0; i < 0; i++){
-			Chromosome child = Chromosome.inversion(chromosomes[1]);
-			child.calculateCost(cities);
-			for (int j = 0; j < 100; j++){
-				if (chromosomes[j].getCost() > child.getCost()){
-					chromosomes[j] = child;
-					break;
-				}
-			}
-		}
-
-		for (int i = 0; i < 0; i++){
-			Chromosome child = Chromosome.inversion(chromosomes[2]);
-			child.calculateCost(cities);
-			for (int j = 0; j < 100; j++){
-				if (chromosomes[j].getCost() > child.getCost()){
-					chromosomes[j] = child;
-					break;
-				}
-			}
-		}
-
-		for (int i = 0; i < 0; i++){
-			Chromosome child = Chromosome.inversion(chromosomes[3]);
-			child.calculateCost(cities);
-			for (int j = 0; j < 100; j++){
-				if (chromosomes[j].getCost() > child.getCost()){
-					chromosomes[j] = child;
-					break;
-				}
-			}
-		}
-		for (int i = 0; i < 0; i++){
-			Chromosome child = Chromosome.inversion(chromosomes[4]);
-			child.calculateCost(cities);
-			for (int j = 0; j < 100; j++){
-				if (chromosomes[j].getCost() > child.getCost()){
-					chromosomes[j] = child;
-					break;
-				}
-			}
-		}
 	}
 
 	/**
