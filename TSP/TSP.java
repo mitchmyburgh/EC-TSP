@@ -110,25 +110,28 @@ public class TSP {
 		System.out.println(content);
 	}
 
-	public static void evolve() {
+	public static void evolve_old() {
+
+		// for (int i = 0; i < chromosomes.length; i++) {
+		// 	System.out.println(chromosomes[i].getCost());
+		// }
 		//Generate 100 children
-		Chromosome[] children = Chromosome.mutate_3_point(chromosomes);
+		Chromosome[] children = Chromosome.mutate_3_point_old(chromosomes);
 		for (int i = 0; i < children.length; i ++){
 			children[i].calculateCost(cities);
 		}
 		for (int i = 0; i < chromosomes.length; i ++){
 			chromosomes[i].calculateCost(cities);
 		}
-
 		Chromosome.sortChromosomes(chromosomes, populationSize);
-		Chromosome.sortChromosomes(children, populationSize);
+		Chromosome.sortChromosomes(children, children.length);
 		//select next generation
 		Chromosome[] end_pop = new Chromosome[populationSize];
 		int count = 0;
 		int pos = 0;
 		for (int i = 0; i < chromosomes.length; i ++){
 			double cost = chromosomes[i].getCost();
-			while (!(pos >= populationSize) && !(count >= populationSize) && children[count].getCost() >= cost){
+			while (!(pos >= populationSize) && !(count >= populationSize) && children[count].getCost() <= cost){
 				end_pop[pos] = children[count];
 				pos++;
 				count++;
@@ -138,8 +141,72 @@ public class TSP {
 				pos++;
 			}
 		}
-		chromosomes = end_pop;
+		chromosomes = end_pop;//children;//end_pop;
 		//Chromosome[] both = (Chromosome[])ArrayUtils.addAll(first, second);
+	}
+
+	public static void evolve() {
+
+		// for (int i = 0; i < chromosomes.length; i++) {
+		// 	System.out.println(chromosomes[i].getCost());
+		// }
+		//Generate 100 children
+		for (int i = 0; i < chromosomes.length; i ++){
+			chromosomes[i].calculateCost(cities);
+		}
+		Chromosome.sortChromosomes(chromosomes, populationSize);
+		for (int i = 0; i < 100; i++){
+			Chromosome child = Chromosome.inversion(chromosomes[0]);
+			child.calculateCost(cities);
+			for (int j = 0; j < 100; j++){
+				if (chromosomes[j].getCost() > child.getCost()){
+					chromosomes[j] = child;
+					break;
+				}
+			}
+		}
+		for (int i = 0; i < 0; i++){
+			Chromosome child = Chromosome.inversion(chromosomes[1]);
+			child.calculateCost(cities);
+			for (int j = 0; j < 100; j++){
+				if (chromosomes[j].getCost() > child.getCost()){
+					chromosomes[j] = child;
+					break;
+				}
+			}
+		}
+
+		for (int i = 0; i < 0; i++){
+			Chromosome child = Chromosome.inversion(chromosomes[2]);
+			child.calculateCost(cities);
+			for (int j = 0; j < 100; j++){
+				if (chromosomes[j].getCost() > child.getCost()){
+					chromosomes[j] = child;
+					break;
+				}
+			}
+		}
+
+		for (int i = 0; i < 0; i++){
+			Chromosome child = Chromosome.inversion(chromosomes[3]);
+			child.calculateCost(cities);
+			for (int j = 0; j < 100; j++){
+				if (chromosomes[j].getCost() > child.getCost()){
+					chromosomes[j] = child;
+					break;
+				}
+			}
+		}
+		for (int i = 0; i < 0; i++){
+			Chromosome child = Chromosome.inversion(chromosomes[4]);
+			child.calculateCost(cities);
+			for (int j = 0; j < 100; j++){
+				if (chromosomes[j].getCost() > child.getCost()){
+					chromosomes[j] = child;
+					break;
+				}
+			}
+		}
 	}
 
 	/**
@@ -312,7 +379,7 @@ public class TSP {
 					while (generation < 100) {
 						evolve();
 						if(generation % 5 == 0 )
-						cities = MoveCities(originalCities); //Move from original cities, so they only move by a maximum of one unit.
+							cities = MoveCities(originalCities); //Move from original cities, so they only move by a maximum of one unit.
 						generation++;
 
 						Chromosome.sortChromosomes(chromosomes, populationSize);

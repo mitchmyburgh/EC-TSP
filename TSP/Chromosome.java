@@ -120,11 +120,13 @@ class Chromosome {
         }
     }
 
-    public static Chromosome[] mutate_3_point (Chromosome chromosomes[]) {
-        Chromosome[] return_chromosomes = new Chromosome[chromosomes.length];
+    public static Chromosome[] mutate_3_point_old (Chromosome chromosomes[]) {
+        int children_per_parent = 100;
+        Chromosome[] return_chromosomes = new Chromosome[chromosomes.length*children_per_parent];
         Random rand = new Random();
-        double mutation_probability = 0.1;
+        double mutation_probability = 1.0;
         for (int i = 0; i<chromosomes.length; i++){
+          for (int k = 0; k< children_per_parent; k++){
             if (rand.nextDouble() < mutation_probability) {
                 int length = chromosomes[i].getCities().length;
 
@@ -133,7 +135,7 @@ class Chromosome {
                 int end = rand.nextInt((length- start))+start; //check this
                 int position = rand.nextInt(length-(end-start)); // check this
 
-                return_chromosomes[i] = new Chromosome(chromosomes[i]);
+                return_chromosomes[i*children_per_parent+k] = new Chromosome(chromosomes[i]);
 
                 int[] cities = return_chromosomes[i].getCities();
                 int[] new_cities = new int[cities.length];
@@ -153,11 +155,77 @@ class Chromosome {
                     }
                 }
 
-                return_chromosomes[i].setCities(new_cities);
+                return_chromosomes[i*children_per_parent+k].setCities(new_cities);
             } else {
-              return_chromosomes[i] = new Chromosome(chromosomes[i]);
+              return_chromosomes[i*children_per_parent+k] = new Chromosome(chromosomes[i]);
             }
+          }
         }
         return return_chromosomes;
+    }
+
+    public static Chromosome mutate_3_point (Chromosome chromosome) {
+        Random rand = new Random();
+        int length = chromosome.getCities().length;
+
+        //up to and not including length
+        int start = rand.nextInt(length);
+        int end = rand.nextInt((length- start))+start; //check this
+        int position = rand.nextInt(length-(end-start)); // check this
+
+        Chromosome return_chromosome = new Chromosome(chromosome);
+
+        int[] cities = return_chromosome.getCities();
+        int[] new_cities = new int[cities.length];
+        int count=0;
+        for (int j = start; j <= (end); j++){
+            new_cities[position+count] = cities[j];
+            cities[j] = -1;
+            count++;
+        }
+        count = 0;
+        for (int j = 0; j < cities.length; j++){
+            if (cities[j] != -1){
+                while (new_cities[count] != 0) {
+                    count++;
+                }
+                new_cities[count] = cities[j] ;
+            }
+        }
+
+        return_chromosome.setCities(new_cities);
+        return return_chromosome;
+    }
+
+    public static Chromosome inversion (Chromosome chromosome) {
+        Random rand = new Random();
+        int length = chromosome.getCities().length;
+
+        //up to and not including length
+        int start = rand.nextInt(length);
+        int end = rand.nextInt((length- start))+start; //check this
+
+        Chromosome return_chromosome = new Chromosome(chromosome);
+
+        int[] cities = return_chromosome.getCities();
+        int[] new_cities = new int[cities.length];
+        int count=0;
+        for (int j = 0; j <= (end-start); j++){
+            new_cities[start+j] = cities[end-j];
+            //1 [2 3 4] 5
+            cities[end-j] = -1;
+            count++;
+        }
+        count = 0;
+        for (int j = 0; j < cities.length; j++){
+            if (cities[j] != -1){
+                while (new_cities[count] != 0) {
+                    count++;
+                }
+                new_cities[count] = cities[j] ;
+            }
+        }
+        return_chromosome.setCities(new_cities);
+        return return_chromosome;
     }
 }
