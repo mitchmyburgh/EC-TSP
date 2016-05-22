@@ -110,57 +110,21 @@ public class TSP {
 		System.out.println(content);
 	}
 
-	public static void evolve_old() {
-
-		// for (int i = 0; i < chromosomes.length; i++) {
-		// 	System.out.println(chromosomes[i].getCost());
-		// }
-		//Generate 100 children
-		Chromosome[] children = Chromosome.mutate_3_point_old(chromosomes);
-		for (int i = 0; i < children.length; i ++){
-			children[i].calculateCost(cities);
-		}
-		for (int i = 0; i < chromosomes.length; i ++){
-			chromosomes[i].calculateCost(cities);
-		}
-		Chromosome.sortChromosomes(chromosomes, populationSize);
-		Chromosome.sortChromosomes(children, children.length);
-		//select next generation
-		Chromosome[] end_pop = new Chromosome[populationSize];
-		int count = 0;
-		int pos = 0;
-		for (int i = 0; i < chromosomes.length; i ++){
-			double cost = chromosomes[i].getCost();
-			while (!(pos >= populationSize) && !(count >= populationSize) && children[count].getCost() <= cost){
-				end_pop[pos] = children[count];
-				pos++;
-				count++;
-			}
-			if (pos != populationSize){
-				end_pop[pos] = chromosomes[i];
-				pos++;
-			}
-		}
-		chromosomes = end_pop;//children;//end_pop;
-		//Chromosome[] both = (Chromosome[])ArrayUtils.addAll(first, second);
-	}
-
+	/**
+	 * evolve the Chromosomes
+	 */
 	public static void evolve() {
-
-		// for (int i = 0; i < chromosomes.length; i++) {
-		// 	System.out.println(chromosomes[i].getCost());
-		// }
-		//Generate 100 children
 		for (int i = 0; i < chromosomes.length; i ++){
-			chromosomes[i].calculateCost(cities);
+			chromosomes[i].calculateCost(cities); //update the costs in case the cities moved
 		}
+		//Generate 100 children
 		Chromosome.sortChromosomes(chromosomes, populationSize);
 		for (int i = 0; i < 100; i++){
-			Chromosome child = Chromosome.inversion(chromosomes[0]);
+			Chromosome child = Chromosome.inversion(chromosomes[0]); //mutate the best chromosome
 			child.calculateCost(cities);
 			for (int j = 0; j < 100; j++){
 				if (chromosomes[j].getCost() > child.getCost()){
-					chromosomes[j] = child;
+					chromosomes[j] = child; //swap worse chromosome with the child
 					break;
 				}
 			}

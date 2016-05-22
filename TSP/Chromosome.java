@@ -34,6 +34,12 @@ class Chromosome {
 
         calculateCost(cities);
     }
+
+    /**
+     * Chromosome copy constructor
+     * @param  another Chromosome to duplicate
+     * @return Chromosome
+     */
     public Chromosome(Chromosome another) {
         this.cityList = another.getCities();
     }
@@ -69,6 +75,10 @@ class Chromosome {
         return cityList[i];
     }
 
+    /**
+     * Get copy of cities array
+     * @return int[]
+     */
     int[] getCities() {
         int[] return_cities = new int[this.cityList.length];
         for(int i=0; i<this.cityList.length; i++){
@@ -120,69 +130,32 @@ class Chromosome {
         }
     }
 
-    public static Chromosome[] mutate_3_point_old (Chromosome chromosomes[]) {
-        int children_per_parent = 100;
-        Chromosome[] return_chromosomes = new Chromosome[chromosomes.length*children_per_parent];
-        Random rand = new Random();
-        double mutation_probability = 1.0;
-        for (int i = 0; i<chromosomes.length; i++){
-          for (int k = 0; k< children_per_parent; k++){
-            if (rand.nextDouble() < mutation_probability) {
-                int length = chromosomes[i].getCities().length;
-
-                //up to and not including length
-                int start = rand.nextInt(length);
-                int end = rand.nextInt((length- start))+start; //check this
-                int position = rand.nextInt(length-(end-start)); // check this
-
-                return_chromosomes[i*children_per_parent+k] = new Chromosome(chromosomes[i]);
-
-                int[] cities = return_chromosomes[i].getCities();
-                int[] new_cities = new int[cities.length];
-                int count=0;
-                for (int j = start; j <= (end); j++){
-                    new_cities[position+count] = cities[j];
-                    cities[j] = -1;
-                    count++;
-                }
-                count = 0;
-                for (int j = 0; j < cities.length; j++){
-                    if (cities[j] != -1){
-                        while (new_cities[count] != 0) {
-                            count++;
-                        }
-                        new_cities[count] = cities[j] ;
-                    }
-                }
-
-                return_chromosomes[i*children_per_parent+k].setCities(new_cities);
-            } else {
-              return_chromosomes[i*children_per_parent+k] = new Chromosome(chromosomes[i]);
-            }
-          }
-        }
-        return return_chromosomes;
-    }
-
+    /**
+     * mutate_3_point 3 point mutation
+     * @param  chromosome The Chromosome to mutate
+     * @return Chromosome
+     */
     public static Chromosome mutate_3_point (Chromosome chromosome) {
         Random rand = new Random();
         int length = chromosome.getCities().length;
 
         //up to and not including length
-        int start = rand.nextInt(length);
-        int end = rand.nextInt((length- start))+start; //check this
-        int position = rand.nextInt(length-(end-start)); // check this
+        int start = rand.nextInt(length); //start position
+        int end = rand.nextInt((length- start))+start; //end position
+        int position = rand.nextInt(length-(end-start)); //position to move to
 
-        Chromosome return_chromosome = new Chromosome(chromosome);
+        Chromosome return_chromosome = new Chromosome(chromosome); //return chromosome
 
         int[] cities = return_chromosome.getCities();
         int[] new_cities = new int[cities.length];
         int count=0;
+        //move the cities
         for (int j = start; j <= (end); j++){
             new_cities[position+count] = cities[j];
             cities[j] = -1;
             count++;
         }
+        //full in remaining cities
         count = 0;
         for (int j = 0; j < cities.length; j++){
             if (cities[j] != -1){
@@ -197,25 +170,31 @@ class Chromosome {
         return return_chromosome;
     }
 
+    /**
+     * inversion
+     * @param  chromosome The Chromosome to mutate
+     * @return Chromosome
+     */
     public static Chromosome inversion (Chromosome chromosome) {
         Random rand = new Random();
         int length = chromosome.getCities().length;
 
         //up to and not including length
-        int start = rand.nextInt(length);
-        int end = rand.nextInt((length- start))+start; //check this
+        int start = rand.nextInt(length); //start position
+        int end = rand.nextInt((length- start))+start; //end position
 
         Chromosome return_chromosome = new Chromosome(chromosome);
 
         int[] cities = return_chromosome.getCities();
         int[] new_cities = new int[cities.length];
         int count=0;
+        //move cities
         for (int j = 0; j <= (end-start); j++){
             new_cities[start+j] = cities[end-j];
-            //1 [2 3 4] 5
             cities[end-j] = -1;
             count++;
         }
+        //full in remaining cities
         count = 0;
         for (int j = 0; j < cities.length; j++){
             if (cities[j] != -1){
@@ -225,24 +204,29 @@ class Chromosome {
                 new_cities[count] = cities[j] ;
             }
         }
+        //set cities
         return_chromosome.setCities(new_cities);
         return return_chromosome;
     }
 
+    /**
+     * transposition
+     * @param  chromosome The Chromosome to mutate
+     * @return Chromosome
+     */
     public static Chromosome transposition (Chromosome chromosome) {
         Random rand = new Random();
 
         int length = chromosome.getCities().length;
-        int number_of_switches = 1;//rand.nextInt(length);
-        //up to and not including length
-
+        int number_of_switches = 1;
 
         Chromosome return_chromosome = new Chromosome(chromosome);
 
         int[] cities = return_chromosome.getCities();
         for (int i = 0; i < number_of_switches; i++){
           int pos1 = rand.nextInt(length);
-          int pos2 = rand.nextInt(length); //check this
+          int pos2 = rand.nextInt(length);
+          //switch the cities
           int temp = cities[pos2];
           cities[pos2] = cities[pos1];
           cities[pos1] = temp;
@@ -250,22 +234,25 @@ class Chromosome {
         return_chromosome.setCities(cities);
         return return_chromosome;
     }
+    /**
+     * translocation
+     * @param  chromosome The Chromosome to mutate
+     * @return Chromosome
+     */
     public static Chromosome translocation (Chromosome chromosome) {
         Random rand = new Random();
 
         int length = chromosome.getCities().length;
-        int number_of_switches = 1;//rand.nextInt(length);
-        //up to and not including length
-
 
         Chromosome return_chromosome = new Chromosome(chromosome);
 
         int[] cities = return_chromosome.getCities();
         int[] new_cities = new int[cities.length];
+        //get the positions
         int pos1 = rand.nextInt(length);
-        int pos2 = rand.nextInt(length); //check this
-        while (pos2 == pos1){
-          pos2 = rand.nextInt(length); //check this
+        int pos2 = rand.nextInt(length);
+        while (pos2 == pos1){ //make sure the positions are not the same
+          pos2 = rand.nextInt(length);
         }
         int pos = 0;
         int temp = cities[pos1];
@@ -273,7 +260,7 @@ class Chromosome {
           if (i == pos1){
             continue;
           }
-          if (i == pos2){
+          if (i == pos2){//swap the city to the correct place
               new_cities[pos] = temp;
               new_cities[pos+1] = cities[i];
               pos+=2;
@@ -282,15 +269,7 @@ class Chromosome {
           new_cities[pos] = cities[i];
           pos++;
         }
-        int total = 0;
-        int total_produced = 0;
-        for (int i = 0; i < new_cities.length; i++){
-          total += (i);
-          total_produced += new_cities[i];
-        }
-        if (total != total_produced){
-          System.out.println("ERROR");
-        }
+        //set the cities
         return_chromosome.setCities(new_cities);
         return return_chromosome;
     }
