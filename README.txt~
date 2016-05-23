@@ -15,8 +15,18 @@ Highest: 3230
 
 The Kolmogorov-Smirnov test was run and it was found that both datasets are consistent with a normal distribution:
   Mitch's Data:
-    KS finds the data is consistent with a normal distribution: P= 0.97 where the normal distribution has mean= 3939. and sdev= 187.1
+    KS finds the data is consistent with a normal distribution: P= 0.72 where the normal distribution has mean= 4039. and sdev= 166.8 
   Michael's Data:
-    KS finds the data is consistent with a normal distribution: P= 0.42 where the normal distribution has mean= 2979. and sdev= 95.50
+    KS finds the data is consistent with a normal distribution: P= 0.64 where the normal distribution has mean= 3887. and sdev= 187.0
 
-Since both results are consistent with a normal distribution, independent and the same size a 2 sample T-test was performed:
+The KS test additionally found that:
+	The maximum difference between the cumulative distributions, D, is: 0.4100 with a corresponding P of: 0.000
+
+
+Since both results are consistent with a normal distribution (and therefore parametric), independent and the same size a 2 sample T-test was performed:
+
+H0: mean_mitch - mean_michael = 0
+H1: mean_mitch - mean_michael != 0
+
+The p-value was calculated for a two tailed distribution for sets with unequals variance. The p-value calculated was: 0.0000000003235251092
+which is signifigantly less than 0.05 so we can re
