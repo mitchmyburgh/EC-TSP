@@ -1,0 +1,276 @@
+import java.util.ArrayList;
+import java.util.Random;
+
+class Chromosome {
+
+    /**
+     * The list of cities, which are the genes of this chromosome.
+     */
+    protected int[] cityList;
+
+    /**
+     * The cost of following the cityList order of this chromosome.
+     */
+    protected double cost;
+
+    /**
+     * @param cities The order that this chromosome would visit the cities.
+     */
+    Chromosome(City[] cities) {
+        Random generator = new Random();
+        cityList = new int[cities.length];
+        //cities are visited based on the order of an integer representation [o,n] of each of the n cities.
+        for (int x = 0; x < cities.length; x++) {
+            cityList[x] = x;
+        }
+
+        //shuffle the order so we have a random initial order
+        for (int y = 0; y < cityList.length; y++) {
+            int temp = cityList[y];
+            int randomNum = generator.nextInt(cityList.length);
+            cityList[y] = cityList[randomNum];
+            cityList[randomNum] = temp;
+        }
+
+        calculateCost(cities);
+    }
+
+    /**
+     * Chromosome copy constructor
+     * @param  another Chromosome to duplicate
+     * @return Chromosome
+     */
+    public Chromosome(Chromosome another) {
+        this.cityList = another.getCities();
+    }
+
+    /**
+     * Calculate the cost of the specified list of cities.
+     *
+     * @param cities A list of cities.
+     */
+    void calculateCost(City[] cities) {
+        cost = 0;
+        for (int i = 0; i < cityList.length - 1; i++) {
+            double dist = cities[cityList[i]].proximity(cities[cityList[i + 1]]);
+            cost += dist;
+        }
+
+        cost += cities[cityList[0]].proximity(cities[cityList[cityList.length - 1]]); //Adding return home
+    }
+
+    /**
+     * Get the cost for this chromosome. This is the amount of distance that
+     * must be traveled.
+     */
+    double getCost() {
+        return cost;
+    }
+
+    /**
+     * @param i The city you want.
+     * @return The ith city.
+     */
+    int getCity(int i) {
+        return cityList[i];
+    }
+
+    /**
+     * Get copy of cities array
+     * @return int[]
+     */
+    int[] getCities() {
+        int[] return_cities = new int[this.cityList.length];
+        for(int i=0; i<this.cityList.length; i++){
+           return_cities[i]=this.cityList[i];
+        }
+        return return_cities;
+    }
+
+    /**
+     * Set the order of cities that this chromosome would visit.
+     *
+     * @param list A list of cities.
+     */
+    void setCities(int[] list) {
+        for (int i = 0; i < cityList.length; i++) {
+            cityList[i] = list[i];
+        }
+    }
+
+    /**
+     * Set the index'th city in the city list.
+     *
+     * @param index The city index to change
+     * @param value The city number to place into the index.
+     */
+    void setCity(int index, int value) {
+        cityList[index] = value;
+    }
+
+    /**
+     * Sort the chromosomes by their cost.
+     *
+     * @param chromosomes An array of chromosomes to sort.
+     * @param num         How much of the chromosome list to sort.
+     */
+    public static void sortChromosomes(Chromosome chromosomes[], int num) {
+        Chromosome ctemp;
+        boolean swapped = true;
+        while (swapped) {
+            swapped = false;
+            for (int i = 0; i < num - 1; i++) {
+                if (chromosomes[i].getCost() > chromosomes[i + 1].getCost()) {
+                    ctemp = chromosomes[i];
+                    chromosomes[i] = chromosomes[i + 1];
+                    chromosomes[i + 1] = ctemp;
+                    swapped = true;
+                }
+            }
+        }
+    }
+
+    /**
+     * mutate_3_point 3 point mutation
+     * @param  chromosome The Chromosome to mutate
+     * @return Chromosome
+     */
+    public static Chromosome mutate_3_point (Chromosome chromosome) {
+        Random rand = new Random();
+        int length = chromosome.getCities().length;
+
+        //up to and not including length
+        int start = rand.nextInt(length); //start position
+        int end = rand.nextInt((length- start))+start; //end position
+        int position = rand.nextInt(length-(end-start)); //position to move to
+
+        Chromosome return_chromosome = new Chromosome(chromosome); //return chromosome
+
+        int[] cities = return_chromosome.getCities();
+        int[] new_cities = new int[cities.length];
+        int count=0;
+        //move the cities
+        for (int j = start; j <= (end); j++){
+            new_cities[position+count] = cities[j];
+            cities[j] = -1;
+            count++;
+        }
+        //full in remaining cities
+        count = 0;
+        for (int j = 0; j < cities.length; j++){
+            if (cities[j] != -1){
+                while (new_cities[count] != 0) {
+                    count++;
+                }
+                new_cities[count] = cities[j] ;
+            }
+        }
+
+        return_chromosome.setCities(new_cities);
+        return return_chromosome;
+    }
+
+    /**
+     * inversion
+     * @param  chromosome The Chromosome to mutate
+     * @return Chromosome
+     */
+    public static Chromosome inversion (Chromosome chromosome) {
+        Random rand = new Random();
+        int length = chromosome.getCities().length;
+
+        //up to and not including length
+        int start = rand.nextInt(length); //start position
+        int end = rand.nextInt((length- start))+start; //end position
+
+        Chromosome return_chromosome = new Chromosome(chromosome);
+
+        int[] cities = chromosome.getCities();
+        int[] new_cities = new int[cities.length];
+        int count=0;
+        //move cities
+        for (int j = 0; j <= (end-start); j++){
+            new_cities[start+j] = cities[end-j];
+            cities[end-j] = -1;
+            count++;
+        }
+        //full in remaining cities
+        count = 0;
+        for (int j = 0; j < cities.length; j++){
+            if (cities[j] != -1){
+                while (new_cities[count] != 0) {
+                    count++;
+                }
+                new_cities[count] = cities[j] ;
+            }
+        }
+        //set cities
+        return_chromosome.setCities(new_cities);
+        return return_chromosome;
+    }
+
+    /**
+     * transposition
+     * @param  chromosome The Chromosome to mutate
+     * @return Chromosome
+     */
+    public static Chromosome transposition (Chromosome chromosome) {
+        Random rand = new Random();
+
+        int length = chromosome.getCities().length;
+        int number_of_switches = 1;
+
+        Chromosome return_chromosome = new Chromosome(chromosome);
+
+        int[] cities = return_chromosome.getCities();
+        for (int i = 0; i < number_of_switches; i++){
+          int pos1 = rand.nextInt(length);
+          int pos2 = rand.nextInt(length);
+          //switch the cities
+          int temp = cities[pos2];
+          cities[pos2] = cities[pos1];
+          cities[pos1] = temp;
+        }
+        return_chromosome.setCities(cities);
+        return return_chromosome;
+    }
+    /**
+     * translocation
+     * @param  chromosome The Chromosome to mutate
+     * @return Chromosome
+     */
+    public static Chromosome translocation (Chromosome chromosome) {
+        Random rand = new Random();
+
+        int length = chromosome.getCities().length;
+
+        Chromosome return_chromosome = new Chromosome(chromosome);
+
+        int[] cities = return_chromosome.getCities();
+        int[] new_cities = new int[cities.length];
+        //get the positions
+        int pos1 = rand.nextInt(length);
+        int pos2 = rand.nextInt(length);
+        while (pos2 == pos1){ //make sure the positions are not the same
+          pos2 = rand.nextInt(length);
+        }
+        int pos = 0;
+        int temp = cities[pos1];
+        for (int i = 0; i < cities.length; i++){
+          if (i == pos1){
+            continue;
+          }
+          if (i == pos2){//swap the city to the correct place
+              new_cities[pos] = temp;
+              new_cities[pos+1] = cities[i];
+              pos+=2;
+              continue;
+          }
+          new_cities[pos] = cities[i];
+          pos++;
+        }
+        //set the cities
+        return_chromosome.setCities(new_cities);
+        return return_chromosome;
+    }
+}
