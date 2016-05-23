@@ -121,7 +121,7 @@ public class TSP {
 		Chromosome.sortChromosomes(chromosomes, populationSize);
 		for (int i = 0; i < 70; i++){
 			Chromosome child = Chromosome.inversion(chromosomes[0]); //mutate the best chromosome
-			child.calculateCost(cities); //calculate the
+			child.calculateCost(cities); //calculate the cost
 			for (int j = 0; j < 100; j++){
 				if (chromosomes[j].getCost() > child.getCost()){
 					chromosomes[j] = child; //swap worse (than child) chromosome with the child
@@ -131,7 +131,7 @@ public class TSP {
 		}
 		for (int i = 0; i < 10; i++){
 			Chromosome child = Chromosome.inversion(chromosomes[1]); //mutate the second best chromosome
-			child.calculateCost(cities); //calculate the
+			child.calculateCost(cities); //calculate the cost
 			for (int j = 0; j < 100; j++){
 				if (chromosomes[j].getCost() > child.getCost()){
 					chromosomes[j] = child; //swap worse (than child) chromosome with the child
@@ -141,7 +141,7 @@ public class TSP {
 		}
 		for (int i = 0; i < 10; i++){
 			Chromosome child = Chromosome.inversion(chromosomes[2]); //mutate the third best chromosome
-			child.calculateCost(cities); //calculate the
+			child.calculateCost(cities); //calculate the cost
 			for (int j = 0; j < 100; j++){
 				if (chromosomes[j].getCost() > child.getCost()){
 					chromosomes[j] = child; //swap worse (than child) chromosome with the child
@@ -151,7 +151,7 @@ public class TSP {
 		}
 		for (int i = 0; i < 5; i++){
 			Chromosome child = Chromosome.inversion(chromosomes[3]); //mutate the fourth best chromosome
-			child.calculateCost(cities); //calculate the
+			child.calculateCost(cities); //calculate the cost
 			for (int j = 0; j < 100; j++){
 				if (chromosomes[j].getCost() > child.getCost()){
 					chromosomes[j] = child; //swap worse (than child) chromosome with the child
@@ -161,7 +161,7 @@ public class TSP {
 		}
 		for (int i = 0; i < 5; i++){
 			Chromosome child = Chromosome.inversion(chromosomes[4]); //mutate the fifth best chromosome
-			child.calculateCost(cities); //calculate the
+			child.calculateCost(cities); //calculate the cost
 			for (int j = 0; j < 100; j++){
 				if (chromosomes[j].getCost() > child.getCost()){
 					chromosomes[j] = child; //swap worse (than child) chromosome with the child

@@ -130,7 +130,7 @@ public class TSP {
 			}
 		}
 		for (int i = 0; i < 10; i++){
-			Chromosome child = Chromosome.inversion(chromosomes[1]); //mutate the best chromosome
+			Chromosome child = Chromosome.inversion(chromosomes[1]); //mutate the second best chromosome
 			child.calculateCost(cities); //calculate the
 			for (int j = 0; j < 100; j++){
 				if (chromosomes[j].getCost() > child.getCost()){
@@ -140,7 +140,7 @@ public class TSP {
 			}
 		}
 		for (int i = 0; i < 10; i++){
-			Chromosome child = Chromosome.inversion(chromosomes[2]); //mutate the best chromosome
+			Chromosome child = Chromosome.inversion(chromosomes[2]); //mutate the third best chromosome
 			child.calculateCost(cities); //calculate the
 			for (int j = 0; j < 100; j++){
 				if (chromosomes[j].getCost() > child.getCost()){
@@ -150,7 +150,7 @@ public class TSP {
 			}
 		}
 		for (int i = 0; i < 5; i++){
-			Chromosome child = Chromosome.inversion(chromosomes[3]); //mutate the best chromosome
+			Chromosome child = Chromosome.inversion(chromosomes[3]); //mutate the fourth best chromosome
 			child.calculateCost(cities); //calculate the
 			for (int j = 0; j < 100; j++){
 				if (chromosomes[j].getCost() > child.getCost()){
@@ -160,7 +160,7 @@ public class TSP {
 			}
 		}
 		for (int i = 0; i < 5; i++){
-			Chromosome child = Chromosome.inversion(chromosomes[4]); //mutate the best chromosome
+			Chromosome child = Chromosome.inversion(chromosomes[4]); //mutate the fifth best chromosome
 			child.calculateCost(cities); //calculate the
 			for (int j = 0; j < 100; j++){
 				if (chromosomes[j].getCost() > child.getCost()){
