@@ -30,6 +30,8 @@ H1: mean_mitch - mean_michael != 0
 alpha = 0.025 (two tailed distribution)
 p-value = 0.0000000003235251092
 
+p-value<alpha
+
 Result: Reject null hypothesis. Therefor the results are significantly different.
 
 The p-value was calculated for a two tailed distribution for sets with unequals variance.
