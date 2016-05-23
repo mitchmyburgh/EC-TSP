@@ -2,16 +2,16 @@ Mitch Myburgh (MYBMIT001)
 Solution to dynamic TSP
 
 Results:
-Lowest: 3514
-Average: 3938.77
-Highest: 4380
+Lowest: 3653
+Average: 4042.15
+Highest: 4439
 
 Compared with Michael Kyeyune (KYYMIC001)
 
 Results:
-Lowest: 2760
-Average: 2971.66
-Highest: 3230
+Lowest: 3403
+Average: 3892.51
+Highest: 4337
 
 The Kolmogorov-Smirnov test was run and it was found that both datasets are consistent with a normal distribution:
   Mitch's Data:
@@ -27,6 +27,13 @@ Since both results are consistent with a normal distribution (and therefore para
 
 H0: mean_mitch - mean_michael = 0
 H1: mean_mitch - mean_michael != 0
+alpha = 0.025 (two tailed distribution)
+p-value = 0.0000000003235251092
 
-The p-value was calculated for a two tailed distribution for sets with unequals variance. The p-value calculated was: 0.0000000003235251092
-which is signifigantly less than 0.05 so we can re
+Result: Reject null hypothesis. Therefor the results are significantly different.
+
+The p-value was calculated for a two tailed distribution for sets with unequals variance.
+
+Explaination of results:
+
+The results were significantly different, this can be explained by the differences in to the implementation. Michael mutated only the top chromosome, while Mitch mutated the top 5 (with higher fitness individuals having more children), this resulted in higher exploitation for Michael which was advantageous due to the low number of generations available. In addition Michael always replaced the least fit individual, then resorting the list, while Mitch replaced the highest fitness individual that had fitness lower than the current child, this resulted in keeping poor fitness individuals for multiple generations, while Michael replaced these poor fitness individuals, both of these methods could be considered elitism, while Michael's approach produced better results. These two differences had the largest impact as both results were obtained using inversion, and no crossover as suggested in the slides on the TSP.
