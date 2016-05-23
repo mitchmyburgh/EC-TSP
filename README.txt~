@@ -15,7 +15,7 @@ Highest: 3230
 
 The Kolmogorov-Smirnov test was run and it was found that both datasets are consistent with a normal distribution:
   Mitch's Data:
-    KS finds the data is consistent with a normal distribution: P= 0.78 where the normal distribution has mean= 3994. and sdev= 180.8 
+    KS finds the data is consistent with a normal distribution: P= 0.97 where the normal distribution has mean= 3939. and sdev= 187.1
   Michael's Data:
     KS finds the data is consistent with a normal distribution: P= 0.42 where the normal distribution has mean= 2979. and sdev= 95.50
 
